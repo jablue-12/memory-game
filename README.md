@@ -20,5 +20,18 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+--------
+### Adding vuex to project
+```
+vue add vuex
+```
+
+### Adding bootstrap to project (vue version 2 only)
+```
+vue add bootstrap-vue
+```
+
+### Adding router to project
+```
+vue add router
+```
