@@ -21,6 +21,7 @@ npm run lint
 ```
 
 --------
+## Vuex/bootstrap/router setup
 ### Adding vuex to project
 ```
 vue add vuex
