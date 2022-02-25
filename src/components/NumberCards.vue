@@ -41,81 +41,60 @@ export default {
   },//end computed
 
   methods: {
-    ...mapActions(['generateNumberCards']),
+    ...mapActions(['generateNumberCards','updateNumberCard']),
 
     cardClicked(card){
-      console.log(JSON.stringify(card));
+      console.log("clicked..." + JSON.stringify(card));
 
-      // if(this.twoChosenCards.length < 1){ 
-      //   //no first card is selected, so we add the first card to the 'list'
-      //   this.twoChosenCards.push(card);
-      // }else{
-      //   //second card is selected, so we now check if they are a pair (same name in this case)
-      //   let firstCard = this.twoChosenCards[0];
-      //   if(card.name === firstCard.name){
-      //     console.log("they are a pair!");
-      //   }else{
-      //     console.log("not a pair!");
+      if(this.twoChosenCards.length < 1){ 
+        //no first card is selected, so we add the first card to the 'list'
+        this.twoChosenCards.push(card);
+      }else{
+        //second card is selected, so we now check if they are a pair (same name in this case)
+        let firstCard = this.twoChosenCards[0];
+        if(card.name === firstCard.name){
+          setTimeout(()=>{
+             alert("they are a pair!");
+           },1200);
+           
+        }else{
+          console.log("not a pair!");
+          console.log("first card: " + JSON.stringify(this.twoChosenCards[0]))
+          console.log("second card: " + JSON.stringify(card))
+          //flip back the 2 selected cards by finding their positions and setting 
+          let updateFirstCard = {
+              id: this.twoChosenCards[0].id,
+              name: this.twoChosenCards[0].name,
+              isFrontSide: false,
+              hasPair: false
+          };
+
+          let updateSecondCard = {
+            id: card.id,
+            name: card.name,
+            isFrontSide: false,
+            hasPair: false
+          }
+
+           setTimeout(()=>{
+             alert("not a pair!");
+             this.flipCardsBack(updateFirstCard,updateSecondCard);
+           },1200);
+           
           
-      //     //flip back the 2 selected cards by finding their positions and setting 
-      //     let firstCardPos = this.findClickedCard(firstCard);
-      //     let secondCardPos = this.findClickedCard(card);
+        }
+        //empty out the cards 
+        this.twoChosenCards = [];
 
-      //     this.itemList[firstCardPos[0]][firstCardPos[1]].isFrontSide = false;
-      //     this.itemList[secondCardPos[0]][secondCardPos[1]].isFrontSide = false;
-
-          
-      //   }
-      //   //empty out the cards 
-      //   this.twoChosenCards = [];
-
-      // }//end if-else
-      
-
-      // let positions = this.findClickedCard(card);
-
-      // for(let i = 0; i < this.itemList.length; i++){
-      //   for(let j = 0; j < this.itemList[i].length; j++){
-      //     let item = this.itemList[i][j];
-      //     // console.log(i,j);
-
-      //     //find a pair
-      //     if(card.id !== item.id){
-      //       if(!card.hasPair && !item.hasPair){
-      //         //the selected card should not have a pair
-      //         //the item card (that is available) should not have a pair
-      //         this.itemList[positions[0]][positions[1]].hasPair = true;
-      //         item.hasPair = true;
-      //         break;
-      //       }
-
-      //     }//end if
-
-      //   }//end nested for
-      // }//end for
+      }//end if-else
 
     },//end cardClicked
 
-    // findClickedCard(card){
-    //   //returns the row and col position of the card in the matrix
-    //   let result = []; //should contain 2 elements, row and col respectively
-    //   let isFound = false;
+    flipCardsBack(firstCard,secondCard){
+      this.updateNumberCard({card: firstCard});
+      this.updateNumberCard({card: secondCard});
+    },
 
-    //   for(let i = 0; i < this.itemList.length && !isFound; i++){
-    //     let rowList = this.itemList[i];
-    //     let column = rowList.indexOf(card);
-    //     if(column !== -1 ){
-    //       //when found, push the row which is the i, and the column to the result
-    //       result.push(i);
-    //       result.push(column);
-    //       isFound = true;//break out the loop
-    //     }//end if
-      
-    //   }//end for 
-
-    //   return result;
-
-    // },//end findClickedCard
 
   },//end methods
 

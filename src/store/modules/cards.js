@@ -21,7 +21,20 @@ const mutations = {
 
     pictureCards: (state,payload) => {
         state.pictureCards = payload;
-    }
+    },
+
+    updateNumberCard: (state,payload) => {
+        //payload.card
+        for(let i = 0; i < state.numberCards.length; i++){
+            for(let j = 0; j < state.numberCards[i].length; j++){
+                let currCard = state.numberCards[i][j];
+                if(currCard.id === payload.card.id){
+                    state.numberCards[i].splice(j,1,payload.card);
+                }
+            }//end nested for
+        }//end for
+
+    },
 
 };
 
@@ -31,6 +44,7 @@ const actions = {
     //=======
     //Card logic
     generateNumberCards({commit},payload){
+        //generates the numbers for the number matrix
         const pairs = (payload.dimension * payload.dimension) / 2;
         let createdMatrix = [];
         //instantiate the matrix
@@ -48,7 +62,11 @@ const actions = {
         }//end for
 
         commit('numberCards',createdMatrix);
-    }
+    },
+
+    updateNumberCard({commit},payload){
+        commit('updateNumberCard',payload);
+    },
 
 };
 
