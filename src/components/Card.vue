@@ -2,12 +2,13 @@
     <div class="m-2">
         <b-button class="cardSize" @click="cardClicked()">
             <h3>{{item.id}}</h3>
-            <p v-if="isFrontSide">{{item.name}}</p>
+            <p  v-if="item.isFrontSide">{{item.name}}</p>
         </b-button>
     </div>
 </template>
 
 <script>
+
 export default {
     name: "Card",
 
@@ -15,29 +16,17 @@ export default {
         item: {
             type: Object,
             required: true
-        }
+        },
     },//end props
-
-    data(){
-        return {
-            isFrontSide: false,
-            twoChosenCards: [],
-        }
-    },//end data
 
     methods:{
         cardClicked(){
             //only flip when a card has no pair yet
-            if(this.twoChosenCards.length >= 0 && this.twoChosenCards.length <=2){
-
-                if(!this.item.hasPair){
-                    // console.log("clicked card with id " + this.item.id);
-                    this.isFrontSide = !this.isFrontSide;
-                    this.$emit("card-clicked",this.item);
-                }//end nested if
-               
+            if(!this.item.hasPair && !this.item.isFrontSide){            
+                this.item.isFrontSide = !this.item.isFrontSide;
+                this.$emit("card-clicked",this.item);
             }//end if
-           
+         
         },//end cardClicked
 
     },//end methods

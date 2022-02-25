@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-    <HelloWorld/>
+    <NumberCards/>
   </div>
 </template> 
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue"
+import NumberCards from "./components/NumberCards.vue"
 export default {
-  components: {HelloWorld}
+  components: {NumberCards}
 }
 </script>
 
