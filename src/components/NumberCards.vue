@@ -1,33 +1,46 @@
 <template>
-  <b-container class="mt-5">
+  <div class="mt-5">
+    <GameOverModal playerStatus="You lose!" :playerScore="score" :timer="timer"/> 
+    <ScoreBoard :time="timer" :score="score"/>
 
-    <b-row align-h="center"><h3>Memory Game!</h3></b-row>
+    <!-- TODO: trigger GameOverModal modal when timer ==0 -->
+    <b-button @click="showModal" variant="primary">show modal</b-button>
+    
+    <b-container>
+      <b-row align-h="center"><h3>Memory Game!</h3></b-row>
 
-    <b-row 
-      align-h="center"
-      v-for="(rowList,index) in numberCards" :key="index">
+      <b-row 
+        align-h="center"
+        v-for="(rowList,index) in numberCards" :key="index">
+        
+        <b-col md="auto" v-for="item in rowList" :key="item.id">
+          <Card :item="item" @card-clicked="cardClicked"/>
+        </b-col>
       
-      <b-col md="auto" v-for="item in rowList" :key="item.id">
-        <Card :item="item" @card-clicked="cardClicked"/>
-      </b-col>
+      </b-row>    
+    </b-container>
     
-    </b-row>    
-    
-  </b-container>
+  </div>
 </template>
 
 <script>
 import Card from "./Card.vue";
+import ScoreBoard from "./ScoreBoard.vue";
+import GameOverModal from "./GameOverModal.vue";
 import {mapGetters,mapActions} from "vuex";
 const DIMENSION = 6; //needs to be even so that cards have pairs!
 export default {
   name: 'NumberCards',
 
-  components: {Card},
+  components: {Card,ScoreBoard,GameOverModal},
 
   data(){
     return {
-      twoChosenCards: [],      
+      twoChosenCards: [],
+      timer: 60,
+      score: 0,
+      isGameOver: false,
+      hasPlayerWon: false      
     }
   },//end data
 
@@ -37,8 +50,25 @@ export default {
 
   computed: {
     ...mapGetters(['numberCards']),
-  
+
   },//end computed
+  
+  watch: {
+    timer: {
+      handler(value){
+        if(value > 0){
+          setTimeout(()=> {
+            this.timer--;
+          },1000);
+
+        }
+
+      },//end handler
+
+      immediate: true
+
+    },//end timer
+  },//end watch
 
   methods: {
     ...mapActions(['generateNumberCards','updateNumberCard']),
@@ -95,6 +125,10 @@ export default {
       this.updateNumberCard({card: secondCard});
     },
 
+    showModal(){
+      this.$bvModal.show('statusModal');
+    }
+
 
   },//end methods
 
@@ -106,6 +140,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .container{
-    background: rgb(155, 126, 126);
+   background: #fff;
   }
 </style>
