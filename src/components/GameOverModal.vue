@@ -8,7 +8,7 @@
         body-bg-variant="light"
         body-text-variant="info"
         centered
-        @hidden="resetTimer">
+        @hidden="closeModal">
         
         <div>
             <b-row align-h="center"><h4>{{playerStatus}}</h4></b-row>
@@ -36,8 +36,8 @@ export default {
     },//end props
 
     methods: {
-        resetTimer(){
-            this.$emit("reset-timer");
+        closeModal(){
+            this.$emit("close-modal");
         }
     }
     

@@ -23,7 +23,6 @@ export default {
         cardClicked(){
             //only flip when a card has no pair yet
             if(!this.item.hasPair && !this.item.isFrontSide){            
-                this.item.isFrontSide = !this.item.isFrontSide;
                 this.$emit("card-clicked",this.item);
             }//end if
          

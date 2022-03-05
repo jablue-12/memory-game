@@ -1,14 +1,15 @@
 <template>
   <div class="mt-5">
     <GameOverModal 
-      playerStatus="You lose!" 
+      :playerStatus="hasPlayerWon? 'You Win!':'You Lose!'" 
       :playerScore="score" 
       :timer="countDown"
-      @reset-timer="resetTimer"
+      @close-modal="closeModal"
       /> 
     <ScoreBoard :time="countDown" :score="score"/>
 
-    {{countDown === 0? showModal(): null}}
+    <!-- TODO: bug when player has won. Modal appears twice. Need to fix -->
+    {{ (countDown === 0 || hasPlayerWon)? (showModal()) : null}}
 
     <b-container>
       <b-row align-h="center"><h3>Memory Game!</h3></b-row>
@@ -32,7 +33,8 @@ import Card from "./Card.vue";
 import ScoreBoard from "./ScoreBoard.vue";
 import GameOverModal from "./GameOverModal.vue";
 import {mapGetters,mapActions} from "vuex";
-const DIMENSION = 6; //needs to be even so that cards have pairs!
+const DIMENSION = 4; //needs to be even so that cards have pairs!
+const TIMER = 60;
 export default {
   name: 'NumberCards',
 
@@ -41,10 +43,9 @@ export default {
   data(){
     return {
       twoChosenCards: [],
-      countDown: 3,
+      countDown: TIMER,
       score: 0,
-      isGameOver: false,
-      hasPlayerWon: false      
+      isGameOver: false,      
     }
   },//end data
 
@@ -56,29 +57,37 @@ export default {
   computed: {
     ...mapGetters(['numberCards']),
 
+    hasPlayerWon(){
+      return this.score === (DIMENSION*DIMENSION)/2 && !this.isGameOver;
+    }
+
   },//end computed
 
   methods: {
     ...mapActions(['generateNumberCards','updateNumberCard']),
 
     cardClicked(card){
-      console.log("clicked..." + JSON.stringify(card));
+      console.log("clicked..." + this.twoChosenCards.length);
 
-      if(this.twoChosenCards.length < 1){ 
+      if(this.twoChosenCards.length === 0){ 
+        //flip the first card to show the front side
+        card.isFrontSide = true;
         //no first card is selected, so we add the first card to the 'list'
         this.twoChosenCards.push(card);
-      }else{
-        //second card is selected, so we now check if they are a pair (same name in this case)
+
+      }else if(this.twoChosenCards.length === 1){
+        //flip the second card to show the front side
+        card.isFrontSide = true;
+        this.twoChosenCards.push(card);
+
+        //now check if they are a pair (same name in this case)
         let firstCard = this.twoChosenCards[0];
+
         if(card.name === firstCard.name){
-          setTimeout(()=>{
-             alert("they are a pair!");
-           },1200);
-           
+          //increase score if two cards are a pair
+          this.score ++;
+          this.twoChosenCards = [];
         }else{
-          console.log("not a pair!");
-          console.log("first card: " + JSON.stringify(this.twoChosenCards[0]))
-          console.log("second card: " + JSON.stringify(card))
           //flip back the 2 selected cards by finding their positions and setting 
           let updateFirstCard = {
               id: this.twoChosenCards[0].id,
@@ -88,8 +97,8 @@ export default {
           };
 
           let updateSecondCard = {
-            id: card.id,
-            name: card.name,
+            id: this.twoChosenCards[1].id,
+            name:this.twoChosenCards[1].name,
             isFrontSide: false,
             hasPair: false
           }
@@ -97,28 +106,32 @@ export default {
            setTimeout(()=>{
              alert("not a pair!");
              this.flipCardsBack(updateFirstCard,updateSecondCard);
-           },1200);
-           
+           },1000);
           
-        }
-        //empty out the cards 
-        this.twoChosenCards = [];
+          //empty out the cards after 1 second to avoid spamming the cards lol
+          setTimeout(()=>{
+              this.twoChosenCards = [];
+          },1000);
+          
+        }//end nested if-else
 
-      }//end if-else
+      }//end if-elseif
 
     },//end cardClicked
 
     flipCardsBack(firstCard,secondCard){
+      //fip from front to back again when two cards are not pairs
       this.updateNumberCard({card: firstCard});
       this.updateNumberCard({card: secondCard});
-    },
+    },//end flipCardsBack
 
     showModal(){
+      //opens the modal
       this.$bvModal.show('statusModal');
     },//end showModal
 
     countDownTimer(){
-      if(this.countDown > -1) {
+      if(this.countDown > -1 && !this.isGameOver) {
           setTimeout(() => {
               this.countDown -= 1
               this.countDownTimer()
@@ -126,15 +139,18 @@ export default {
       }//end uf
     },//end countDownTimer
 
-    resetTimer(){
-      //resets the timer to 60 which will then close the modal
-      this.countDown = 60;
-    },
-
+    closeModal(){
+      //resets the timer which will then close the modal
+      this.countDown = TIMER;
+      if(!this.hasPlayerWon){
+        this.score = 0;
+      }
+      this.isGameOver = true;
+      this.generateNumberCards({dimension:DIMENSION});
+      
+    },//end closeModal
 
   },//end methods
-
-
 
 }
 </script>
