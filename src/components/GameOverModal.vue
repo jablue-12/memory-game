@@ -7,7 +7,8 @@
         size="sm"
         body-bg-variant="light"
         body-text-variant="info"
-        centered>
+        centered
+        @hidden="resetTimer">
         
         <div>
             <b-row align-h="center"><h4>{{playerStatus}}</h4></b-row>
@@ -33,6 +34,12 @@ export default {
         }
 
     },//end props
+
+    methods: {
+        resetTimer(){
+            this.$emit("reset-timer");
+        }
+    }
     
 }
 </script>

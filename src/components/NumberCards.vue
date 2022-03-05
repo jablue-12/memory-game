@@ -1,11 +1,15 @@
 <template>
   <div class="mt-5">
-    <GameOverModal playerStatus="You lose!" :playerScore="score" :timer="timer"/> 
-    <ScoreBoard :time="timer" :score="score"/>
+    <GameOverModal 
+      playerStatus="You lose!" 
+      :playerScore="score" 
+      :timer="countDown"
+      @reset-timer="resetTimer"
+      /> 
+    <ScoreBoard :time="countDown" :score="score"/>
 
-    <!-- TODO: trigger GameOverModal modal when timer ==0 -->
-    <b-button @click="showModal" variant="primary">show modal</b-button>
-    
+    {{countDown === 0? showModal(): null}}
+
     <b-container>
       <b-row align-h="center"><h3>Memory Game!</h3></b-row>
 
@@ -37,7 +41,7 @@ export default {
   data(){
     return {
       twoChosenCards: [],
-      timer: 60,
+      countDown: 3,
       score: 0,
       isGameOver: false,
       hasPlayerWon: false      
@@ -46,29 +50,13 @@ export default {
 
   created(){
     this.generateNumberCards({dimension:DIMENSION});
+    this.countDownTimer();
   },
 
   computed: {
     ...mapGetters(['numberCards']),
 
   },//end computed
-  
-  watch: {
-    timer: {
-      handler(value){
-        if(value > 0){
-          setTimeout(()=> {
-            this.timer--;
-          },1000);
-
-        }
-
-      },//end handler
-
-      immediate: true
-
-    },//end timer
-  },//end watch
 
   methods: {
     ...mapActions(['generateNumberCards','updateNumberCard']),
@@ -127,7 +115,21 @@ export default {
 
     showModal(){
       this.$bvModal.show('statusModal');
-    }
+    },//end showModal
+
+    countDownTimer(){
+      if(this.countDown > -1) {
+          setTimeout(() => {
+              this.countDown -= 1
+              this.countDownTimer()
+          }, 1000)
+      }//end uf
+    },//end countDownTimer
+
+    resetTimer(){
+      //resets the timer to 60 which will then close the modal
+      this.countDown = 60;
+    },
 
 
   },//end methods
