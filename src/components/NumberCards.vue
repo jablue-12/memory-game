@@ -1,15 +1,18 @@
 <template>
   <div class="mt-5">
-    <GameOverModal 
-      :playerStatus="hasPlayerWon? 'You Win!':'You Lose!'" 
+    <!-- TODO: fix display game over bug
+      - when player wins the game, it changes the status to loser before closing -->
+    <GameOverModal
+      v-if="!isGameOver" 
+      :playerStatus="hasPlayerWon" 
       :playerScore="score" 
       :timer="countDown"
       @close-modal="closeModal"
+      @play-again="playAgain"
       /> 
     <ScoreBoard :time="countDown" :score="score"/>
 
-    <!-- TODO: bug when player has won. Modal appears twice. Need to fix -->
-    {{ (countDown === 0 || hasPlayerWon)? (showModal()) : null}}
+    {{ (countDown === 0 || hasPlayerWon) && !isGameOver ? (stopCountDown=true,showModal()) : null}}
 
     <b-container>
       <b-row align-h="center"><h3>Memory Game!</h3></b-row>
@@ -33,8 +36,8 @@ import Card from "./Card.vue";
 import ScoreBoard from "./ScoreBoard.vue";
 import GameOverModal from "./GameOverModal.vue";
 import {mapGetters,mapActions} from "vuex";
-const DIMENSION = 4; //needs to be even so that cards have pairs!
-const TIMER = 60;
+const DIMENSION = 2; //needs to be even so that cards have pairs!
+const TIMER = 2;
 export default {
   name: 'NumberCards',
 
@@ -45,7 +48,8 @@ export default {
       twoChosenCards: [],
       countDown: TIMER,
       score: 0,
-      isGameOver: false,      
+      isGameOver: false,   
+      stopCountDown: false, 
     }
   },//end data
 
@@ -58,8 +62,8 @@ export default {
     ...mapGetters(['numberCards']),
 
     hasPlayerWon(){
-      return this.score === (DIMENSION*DIMENSION)/2 && !this.isGameOver;
-    }
+      return this.score === (DIMENSION*DIMENSION)/2;
+    },//end hasPlayerWon
 
   },//end computed
 
@@ -131,24 +135,45 @@ export default {
     },//end showModal
 
     countDownTimer(){
-      if(this.countDown > -1 && !this.isGameOver) {
+      if(this.countDown > 0 && !this.stopCountDown) {
           setTimeout(() => {
               this.countDown -= 1
               this.countDownTimer()
           }, 1000)
-      }//end uf
+      }else{
+        //countdown is 0
+        this.stopCountDown = true;
+      }
     },//end countDownTimer
 
     closeModal(){
-      //resets the timer which will then close the modal
-      this.countDown = TIMER;
-      if(!this.hasPlayerWon){
-        this.score = 0;
-      }
       this.isGameOver = true;
-      this.generateNumberCards({dimension:DIMENSION});
-      
     },//end closeModal
+
+    playAgain(){
+      //play again button is clicked from game over modal
+      //close modal
+      this.$bvModal.hide('statusModal');
+
+      //restart the game
+      this.restartGame();
+    },//end playAgain
+
+
+    restartGame(){
+      //reset states back to default
+      this.isGameOver = false;
+      this.stopCountDown = false;
+      this.countDown = TIMER;
+      this.score = 0;
+      this.twoChosenCards = [];
+
+      //generate new cards
+      this.generateNumberCards({dimension:DIMENSION});
+
+      //start count down
+      this.countDownTimer();
+    },//end restartGame
 
   },//end methods
 
