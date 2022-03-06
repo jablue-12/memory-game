@@ -8,7 +8,10 @@
       @close-modal="closeModal"
       @play-again="playAgain"/>
    
-    <ScoreBoard :time="countDown" :score="score"/>
+    <ScoreBoard 
+      :time="countDown" 
+      :score="score"
+      @restart-game="restartGame"/>
 
     <!-- triggers the modal -->
     {{ (countDown === 0 || hasPlayerWon) && !isGameOver ? showModal() : null}}
