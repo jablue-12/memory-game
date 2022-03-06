@@ -11,7 +11,7 @@
     <ScoreBoard :time="countDown" :score="score"/>
 
     <!-- triggers the modal -->
-    {{ (countDown === 0 || hasPlayerWon) && !isGameOver ? (stopCountDown=true,showModal()) : null}}
+    {{ (countDown === 0 || hasPlayerWon) && !isGameOver ? showModal() : null}}
 
     <b-container>
       <b-row align-h="center"><h3>Memory Game!</h3></b-row>
@@ -48,11 +48,11 @@ export default {
       countDown: TIMER,
       score: 0,
       isGameOver: false,   
-      stopCountDown: false, 
       playerStatus: {
         message: "",
         isWinner: false
-      }
+      },
+      timerID: null
     }
   },//end data
 
@@ -71,11 +71,10 @@ export default {
   },//end computed
 
   methods: {
+    //mutations from store
     ...mapActions(['generateNumberCards','updateNumberCard']),
 
     cardClicked(card){
-      console.log("clicked..." + this.twoChosenCards.length);
-
       if(this.twoChosenCards.length === 0){ 
         //flip the first card to show the front side
         card.isFrontSide = true;
@@ -133,9 +132,9 @@ export default {
     },//end flipCardsBack
 
     showModal(){
-      //game is over
+      //game is over; stop the timer
       this.isGameOver = true;
-      clearTimeout(this.countDown);
+      clearTimeout(this.timerID);
 
       //opens the modal
       if(this.hasPlayerWon){
@@ -150,14 +149,11 @@ export default {
     },//end showModal
 
     countDownTimer(){
-      if(this.countDown > 0 && !this.stopCountDown) {
-          setTimeout(() => {
+      if(this.countDown > 0) {
+          this.timerID = setTimeout(() => {
               this.countDown -= 1
               this.countDownTimer()
           }, 1000)
-      }else{
-        //countdown is 0
-        this.stopCountDown = true;
       }
     },//end countDownTimer
 
@@ -178,7 +174,6 @@ export default {
     restartGame(){
       //reset states back to default
       this.isGameOver = false;
-      this.stopCountDown = false;
       this.countDown = TIMER;
       this.score = 0;
       this.twoChosenCards = [];
