@@ -6,7 +6,7 @@
         title="Game Over!" 
         size="sm"
         body-bg-variant="light"
-        :body-text-variant="playerStatus? 'info':'danger'"
+        :body-text-variant="playerStatus.isWinner? 'info':'danger'"
         centered
         :no-close-on-backdrop="true">
 
@@ -19,7 +19,7 @@
         <div>
             <!-- player status -->
             <b-row align-h="center">
-                <h4 >{{playerStatus? 'You Win!':'You Lose!'}}</h4>
+                <h4 >{{playerStatus.message}}</h4>
             </b-row>
 
             <!-- player score -->
@@ -40,7 +40,7 @@ export default {
 
     props:{
         playerStatus: {
-            type: Boolean,
+            type: Object,
             required: true
         },
 

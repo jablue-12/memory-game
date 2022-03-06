@@ -1,17 +1,16 @@
 <template>
   <div class="mt-5">
-    <!-- TODO: fix display game over bug
-      - when player wins the game, it changes the status to loser before closing -->
+  
     <GameOverModal
-      v-if="!isGameOver" 
-      :playerStatus="hasPlayerWon" 
+      :playerStatus="playerStatus" 
       :playerScore="score" 
       :timer="countDown"
       @close-modal="closeModal"
-      @play-again="playAgain"
-      /> 
+      @play-again="playAgain"/>
+   
     <ScoreBoard :time="countDown" :score="score"/>
 
+    <!-- triggers the modal -->
     {{ (countDown === 0 || hasPlayerWon) && !isGameOver ? (stopCountDown=true,showModal()) : null}}
 
     <b-container>
@@ -37,7 +36,7 @@ import ScoreBoard from "./ScoreBoard.vue";
 import GameOverModal from "./GameOverModal.vue";
 import {mapGetters,mapActions} from "vuex";
 const DIMENSION = 2; //needs to be even so that cards have pairs!
-const TIMER = 2;
+const TIMER = 4;
 export default {
   name: 'NumberCards',
 
@@ -50,6 +49,10 @@ export default {
       score: 0,
       isGameOver: false,   
       stopCountDown: false, 
+      playerStatus: {
+        message: "",
+        isWinner: false
+      }
     }
   },//end data
 
@@ -130,8 +133,20 @@ export default {
     },//end flipCardsBack
 
     showModal(){
+      //game is over
+      this.isGameOver = true;
+      clearTimeout(this.countDown);
+
       //opens the modal
+      if(this.hasPlayerWon){
+        this.playerStatus.message = "You Win!";
+        this.playerStatus.isWinner = true;
+      }else{
+        this.playerStatus.message = "You Lose!";
+        this.playerStatus.isWinner = false;
+      }
       this.$bvModal.show('statusModal');
+      
     },//end showModal
 
     countDownTimer(){
@@ -147,7 +162,7 @@ export default {
     },//end countDownTimer
 
     closeModal(){
-      this.isGameOver = true;
+      this.$bvModal.hide('statusModal');
     },//end closeModal
 
     playAgain(){
