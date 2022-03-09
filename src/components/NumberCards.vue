@@ -38,8 +38,8 @@ import Card from "./Card.vue";
 import ScoreBoard from "./ScoreBoard.vue";
 import GameOverModal from "./GameOverModal.vue";
 import {mapGetters,mapActions} from "vuex";
-const DIMENSION = 2; //needs to be even so that cards have pairs!
-const TIMER = 4;
+const DIMENSION = 4; //needs to be even so that cards have pairs!
+const TIMER = 60;
 export default {
   name: 'NumberCards',
 
