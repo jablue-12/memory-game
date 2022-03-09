@@ -1,3 +1,4 @@
+import {NUMBER,PICTURE} from "@/common/types.js"
 const state = {
     numberCards: [],
     pictureCards: []
@@ -40,9 +41,21 @@ const mutations = {
 
 const actions = {
     //TODO: API call
+    //Generic Card logic
+    shuffleCards({commit},payload){
+        const cardType = payload.cardType; //either number or picture
+        let shuffleCards = [];
 
-    //=======
-    //Card logic
+        if(cardType === NUMBER){
+            commit('numberCards',shuffleCards);
+        }else if(cardType === PICTURE){
+            //TODO: change to picture
+            commit('numberCards',shuffleCards);
+        }//end if-elseif
+
+    },//end shuffleCards
+
+    /*Number Card logic*/
     generateNumberCards({commit},payload){
         //generates the numbers for the number matrix
         const pairs = (payload.dimension * payload.dimension) / 2;
