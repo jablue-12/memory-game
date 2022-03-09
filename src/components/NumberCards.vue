@@ -113,7 +113,7 @@ export default {
           }
 
            setTimeout(()=>{
-             alert("not a pair!");
+            //  alert("not a pair!");
              this.flipCardsBack(updateFirstCard,updateSecondCard);
            },1000);
           
