@@ -1,10 +1,4 @@
 <template>
-    <!-- <div class="m-2">
-        <b-button class="cardSize" @click="cardClicked()">
-            <h3>{{item.id}}</h3>
-            <p  v-if="item.isFrontSide">{{item.name}}</p>
-        </b-button>
-    </div> -->
     <div class="m-2" @click="cardClicked()">
         <transition name="flip">
           <p v-bind:key="item.isFrontSide" :class="item.isFrontSide? 'front-card' : 'back-card'">
@@ -24,15 +18,21 @@ export default {
             type: Object,
             required: true
         },
+        isGameOver: {
+            type: Boolean,
+            required: true
+        }
     },//end props
 
     methods:{
         cardClicked(){
-            //only flip when a card has no pair yet
-            if(!this.item.hasPair && !this.item.isFrontSide){            
-                this.$emit("card-clicked",this.item);
-            }//end if
-         
+            //only flip the card when the game is not over yet
+            if(!this.isGameOver){
+                //flip when a card has no pair yet
+                if(!this.item.hasPair && !this.item.isFrontSide){            
+                    this.$emit("card-clicked",this.item);
+                }//end if
+            }
         },//end cardClicked
 
     },//end methods

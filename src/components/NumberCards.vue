@@ -24,7 +24,7 @@
         v-for="(rowList,index) in numberCards" :key="index">
         
         <b-col md="auto" v-for="item in rowList" :key="item.id">
-          <Card :item="item" @card-clicked="cardClicked"/>
+          <Card :item="item" :isGameOver="isGameOver" @card-clicked="cardClicked"/>
         </b-col>
       
       </b-row>    
@@ -189,7 +189,7 @@ export default {
       //start count down
       this.countDownTimer();
 
-      this.shuffleCards({cardType:NUMBER,dimension: DIMENSION})
+      this.shuffleCards({cardType:NUMBER,dimension: DIMENSION});
     },//end restartGame
 
   },//end methods
