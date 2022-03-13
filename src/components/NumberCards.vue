@@ -38,6 +38,7 @@ import Card from "./Card.vue";
 import ScoreBoard from "./ScoreBoard.vue";
 import GameOverModal from "./GameOverModal.vue";
 import {mapGetters,mapActions} from "vuex";
+import {NUMBER} from "@/common/types.js";
 const DIMENSION = 4; //needs to be even so that cards have pairs!
 const TIMER = 60;
 export default {
@@ -75,7 +76,7 @@ export default {
 
   methods: {
     //mutations from store
-    ...mapActions(['generateNumberCards','updateNumberCard']),
+    ...mapActions(['generateNumberCards','updateNumberCard','shuffleCards']),
 
     cardClicked(card){
       if(this.twoChosenCards.length === 0){ 
@@ -180,12 +181,15 @@ export default {
       this.countDown = TIMER;
       this.score = 0;
       this.twoChosenCards = [];
+      clearTimeout(this.timerID);
 
       //generate new cards
       this.generateNumberCards({dimension:DIMENSION});
 
       //start count down
       this.countDownTimer();
+
+      this.shuffleCards({cardType:NUMBER,dimension: DIMENSION})
     },//end restartGame
 
   },//end methods

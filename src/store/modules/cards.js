@@ -42,16 +42,38 @@ const mutations = {
 const actions = {
     //TODO: API call
     //Generic Card logic
-    shuffleCards({commit},payload){
+    shuffleCards({getters},payload){
         const cardType = payload.cardType; //either number or picture
+        const dimension = payload.dimension;
         let shuffleCards = [];
 
+
         if(cardType === NUMBER){
-            commit('numberCards',shuffleCards);
+            shuffleCards = getters.numberCards;
+            // commit('numberCards',shuffleCards);
         }else if(cardType === PICTURE){
             //TODO: change to picture
-            commit('numberCards',shuffleCards);
+            shuffleCards = getters.numberCards;
+            // commit('numberCards',shuffleCards);
         }//end if-elseif
+
+        let randomX,randomY; //random positions
+
+        for(let x = 0; x < shuffleCards.length; x++){
+            for(let y = 0; y < shuffleCards[x].length; y++){
+    
+                randomX = Math.floor(Math.random() * dimension);
+                randomY = Math.floor(Math.random() * dimension);
+
+                //swap two cards' positions
+                let currCard = shuffleCards[x][y];
+                let randomCard = shuffleCards[randomX][randomY]; 
+
+                shuffleCards[x].splice(y,1,randomCard);
+                shuffleCards[randomX].splice(randomY,1,currCard);
+
+            }//end nested for 
+        }//end for
 
     },//end shuffleCards
 
