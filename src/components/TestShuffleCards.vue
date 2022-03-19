@@ -1,6 +1,6 @@
 <template>
     <div>
-    <div class="speed-buttons">
+    <!-- <div class="speed-buttons">
         <button v-for="type,index in shuffleTypes"
                 :key="index"
                 class="button is-small"
@@ -8,7 +8,7 @@
                 @click="shuffleSpeed = `shuffle${type}`">
         {{ type }}
         </button>
-    </div>
+    </div> -->
     <div class="main-buttons">
         <button v-if="isDeckShuffled" @click="displayInitialDeck" class="button is-primary is-outlined">
         Reset <i class="fas fa-undo"></i>
@@ -17,13 +17,14 @@
         Shuffle <i class="fas fa-random"></i>
         </button>
     </div>
-    <transition-group :name="shuffleSpeed" tag="div" class="deck">
+
+    <transition-group :name="shuffleSpeed" tag="button" class="decsk">
         <div v-for="card in cards" :key="card.id"
             class="card"
             :class="suitColor[card.suit]">
-        <span class="card__suit card__suit--top">{{ card.suit }}</span>
-        <span class="card__number">{{ card.rank }} </span>
-        <span class="card__suit card__suit--bottom">{{ card.suit }}</span>
+        <span >{{ card.suit }}</span>
+        <span >{{ card.rank }} </span>
+        <span >{{ card.suit }}</span>
         </div>
     </transition-group>
     </div>
@@ -91,27 +92,6 @@ export default {
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700");
-
-/* html, body, #app {
-  height: 100%;
-  background: ghostwhite;
-} */
-
-.title {
-  font-family: Roboto Slab, sans-serif;
-  text-align: center;
-  padding-top: 30px;
-  margin-bottom: 0 !important;
-  font-weight: 300;
-  font-size: 3rem;
-}
-
-.vue-logo {
-  height: 55px;
-  position: relative;
-  top: 10px;
-}
 
 .speed-buttons {
   text-align: center;
