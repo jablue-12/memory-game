@@ -7,31 +7,43 @@
       :timer="countDown"
       @close-modal="closeModal"
       @play-again="playAgain"/>
-   
-    <ScoreBoard 
-      :time="countDown" 
-      :score="score"
-      @restart-game="restartGame"/>
 
     <!-- triggers the modal -->
     {{ (countDown === 0 || hasPlayerWon) && !isGameOver ? showModal() : null}}
 
     <b-container>
-      <b-row align-h="center"><h3>Memory Game!</h3></b-row>
+      <b-row>
+        <b-col>
 
-      <b-row 
-        align-h="center"
-        v-for="(rowList,index) in numberCards" :key="index">
-        
-        <b-col md="auto" v-for="item in rowList" :key="item.id">
-          <Card :item="item" :isGameOver="isGameOver" @card-clicked="cardClicked"/>
+          <b-row align-h="center"><h3>Memory Game!</h3></b-row>
+
+          <b-row 
+            align-h="center"
+            v-for="(rowList,index) in numberCards" :key="index">
+            
+            <b-col md="auto" v-for="item in rowList" :key="item.id">
+              <Card :item="item" :isGameOver="isGameOver" @card-clicked="cardClicked"/>
+            </b-col>
+          
+          </b-row>   
         </b-col>
+
+        <b-col cols="3" class="mr-0 pr-0">
+          <ScoreBoard 
+            :time="countDown" 
+            :score="score"
+            @restart-game="restartGame"/>
+        </b-col>
+
+      </b-row> 
+
       
-      </b-row>    
 
       <b-row>
         <TestShuffleCards/>
       </b-row>
+
+      
 
 
     </b-container>

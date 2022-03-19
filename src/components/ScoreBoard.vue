@@ -36,9 +36,6 @@ export default {
     .score-board{
         width: 300px;
         height: auto;
-        position:absolute;
-        top:20px;
-        right: 20px;
     }
 
 </style>
