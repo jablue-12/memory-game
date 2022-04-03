@@ -37,15 +37,6 @@
 
       </b-row> 
 
-      
-
-      <b-row>
-        <TestShuffleCards/>
-      </b-row>
-
-      
-
-
     </b-container>
     
   </div>
@@ -55,7 +46,6 @@
 import Card from "./Card.vue";
 import ScoreBoard from "./ScoreBoard.vue";
 import GameOverModal from "./GameOverModal.vue";
-import TestShuffleCards from "./TestShuffleCards.vue";
 import {mapGetters,mapActions} from "vuex";
 import {NUMBER} from "@/common/types.js";
 const DIMENSION = 4; //needs to be even so that cards have pairs!
@@ -63,7 +53,7 @@ const TIMER = 60;
 export default {
   name: 'NumberCards',
 
-  components: {Card,ScoreBoard,GameOverModal,TestShuffleCards},
+  components: {Card,ScoreBoard,GameOverModal},
 
   data(){
     return {
