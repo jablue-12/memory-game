@@ -1,15 +1,15 @@
 <template>
   <div id="app">
 
-    <b-navbar toggleable="lg" type="dark" variant="secondary">
-      <b-navbar-brand><router-link to="/">Scores</router-link></b-navbar-brand>
+    <b-navbar toggleable="lg" type="dark">
+      <b-navbar-brand><router-link to="/" class="navbar-link">Scores</router-link></b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item><router-link to="/numbers">Numbers</router-link> </b-nav-item>
-          <b-nav-item><router-link to="/pictures">Pictures</router-link></b-nav-item>
+          <b-nav-item><router-link to="/numbers" class="navbar-link">Numbers</router-link> </b-nav-item>
+          <b-nav-item><router-link to="/pictures" class="navbar-link">Pictures</router-link></b-nav-item>
         </b-navbar-nav>
 
       </b-collapse>
@@ -20,24 +20,14 @@
 </template>
 
 <style lang="scss">
-// #app {
-//   font-family: Avenir, Helvetica, Arial, sans-serif;
-//   -webkit-font-smoothing: antialiased;
-//   -moz-osx-font-smoothing: grayscale;
-//   text-align: center;
-//   color: #2c3e50;
-// }
+.navbar{
+  color: white;
+  border: 1px solid #333;
+}
 
-// #nav {
-//   padding: 30px;
+.navbar-link{
+  color: #333;
+}
 
-//   a {
-//     font-weight: bold;
-//     color: #2c3e50;
 
-//     &.router-link-exact-active {
-//       color: #42b983;
-//     }
-//   }
-// }
 </style>
