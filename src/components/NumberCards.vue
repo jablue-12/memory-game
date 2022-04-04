@@ -32,7 +32,8 @@
           <ScoreBoard 
             :time="countDown" 
             :score="score"
-            @restart-game="restartGame"/>
+            @restart-game="restartGame"
+            @start-game="startGame"/>
         </b-col>
 
       </b-row> 
