@@ -75,7 +75,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['numberCards']),
+    ...mapGetters({numberCards:'cards/numberCards'}),
 
     hasPlayerWon(){
       return this.score === (DIMENSION*DIMENSION)/2;
@@ -85,7 +85,11 @@ export default {
 
   methods: {
     //mutations from store
-    ...mapActions(['generateNumberCards','updateNumberCard','shuffleCards']),
+    ...mapActions({
+        generateNumberCards:'cards/generateNumberCards',
+        updateNumberCard:'cards/updateNumberCard',
+        shuffleCards:'cards/shuffleCards'
+    }),
 
     cardClicked(card){
       if(this.twoChosenCards.length === 0){ 
