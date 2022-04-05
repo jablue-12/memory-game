@@ -1,11 +1,13 @@
 <template>
-    <b-container>
-        <h1>Scoreboard of the users!</h1>
-    </b-container>
+    <LeaderBoard/>
 </template>
 
 <script>
+import LeaderBoard from "@/components/LeaderBoard.vue"
+
 export default {
+    name: "UserScoresPage",
     
+    components: {LeaderBoard}
 }
 </script>
