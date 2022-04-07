@@ -26,19 +26,19 @@ const actions = {
     //TODO: API CALL (include async)
     
     current({commit}){
-        const current = {username: "Jablue", scores: [7,8]};
+        const current = {username: "Jablue", scores: [{difficulty: "easy", value: 7},{difficulty: "hard", value: 3}]};
         commit('current',{current: current});
     },
 
     all({commit}){
         const all = [
-            {username: "Jablue", scores: [7,8]},
-            {username: "Gabokski", scores: [3,2]},
-            {username: "Arvayne", scores: [4]},
-            {username: "ThePinoy23", scores: [7]},
-            {username: "TryHardTran", scores: [4]},
-            {username: "Bart", scores: [2]},
-            {username: "Ardeen", scores: [5]}
+            {username: "Jablue", scores: [{difficulty: "easy", value: 7},{difficulty: "hard", value: 3}]},
+            {username: "Gabokski", scores: [{difficulty: "easy", value: 7},{difficulty: "hard", value: 3}]},
+            {username: "Arvayne", scores: [{difficulty: "easy", value: 7},{difficulty: "hard", value: 3}]},
+            {username: "ThePinoy23", scores: [{difficulty: "easy", value: 7},{difficulty: "hard", value: 3}]},
+            {username: "TryHardTran", scores: [{difficulty: "easy", value: 7},{difficulty: "hard", value: 3}]},
+            {username: "Bart", scores: [{difficulty: "easy", value: 7},{difficulty: "hard", value: 3}]},
+            {username: "Ardeen", scores: [{difficulty: "easy", value: 7},{difficulty: "hard", value: 3}]}
         ];
         commit('all',{all: all});
     },
