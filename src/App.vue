@@ -1,7 +1,7 @@
 <template>
   <div id="app">
 
-    <b-navbar toggleable="lg" type="dark">
+    <b-navbar toggleable="lg" type="dark" v-if="this.$route.name !== 'LoginPage'">
       <b-navbar-brand><router-link to="/" class="navbar-link">Scores</router-link></b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>

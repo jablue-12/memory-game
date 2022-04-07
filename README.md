@@ -36,3 +36,11 @@ vue add bootstrap-vue
 ```
 vue add router
 ```
+--------
+## Libraries used
+### JS-Cookie
+```
+npm install --save js-cookie
+```
+
+
