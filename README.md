@@ -1,4 +1,4 @@
-# memory-game
+# memory-game [Try it out!](jaredc-memory-game.netlify.app "Memory Game!")
 
 ## Project setup
 ```
