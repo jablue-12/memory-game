@@ -1,51 +1,62 @@
 <template>
-  <div class="mt-5">
-  
-    <GameOverModal
-      :playerStatus="playerStatus" 
-      :playerScore="score" 
-      :timer="countDown"
-      @close-modal="closeModal"
-      @play-again="playAgain"/>
+  <b-container fluid class="mt-2">
 
-    <!-- triggers the modal -->
-    {{ (countDown === 0 || hasPlayerWon) && !isGameOver ? showModal() : null}}
+    <template v-if="!hasGameStarted">
+      <b-row class="mt-5">
+        <b-col md="4" class="ml-auto mr-auto">
+          <StartGame message="Start Number Cards Game!" @start="startGame"/>
+        </b-col>
+      </b-row>
+    </template>
+    <template v-else>
+      <GameOverModal
+        :playerStatus="playerStatus" 
+        :playerScore="score" 
+        :timer="countDown"
+        @close-modal="closeModal"
+        @play-again="playAgain"/>
 
-    <b-container>
-      <b-row>
-        <b-col>
+      <!-- triggers the modal -->
+      {{ (countDown === 0 || hasPlayerWon) && !isGameOver ? showModal() : null}}
 
-          <b-row align-h="center"><h3>Memory Game!</h3></b-row>
+      <template>
+        <b-row>
+          <b-col>
 
-          <b-row 
-            align-h="center"
-            v-for="(rowList,index) in numberCards" :key="index">
+            <b-row align-h="center"><h3>Memory Game!</h3></b-row>
+
+            <b-row 
+              align-h="center"
+              v-for="(rowList,index) in numberCards" :key="index">
+              
+              <b-col md="auto" v-for="item in rowList" :key="item.id">
+                <Card :item="item" :isGameOver="isGameOver" @card-clicked="cardClicked"/>
+              </b-col>
             
-            <b-col md="auto" v-for="item in rowList" :key="item.id">
-              <Card :item="item" :isGameOver="isGameOver" @card-clicked="cardClicked"/>
-            </b-col>
-          
-          </b-row>   
-        </b-col>
+            </b-row>   
+          </b-col>
 
-        <b-col cols="3" class="mr-0 pr-0">
-          <ScoreBoard 
-            :time="countDown" 
-            :score="score"
-            @restart-game="restartGame"/>
-        </b-col>
+          <b-col cols="3" class="mr-0 pr-0">
+            <ScoreBoard 
+              :time="countDown" 
+              :score="score"
+              @restart-game="restartGame"/>
+          </b-col>
 
-      </b-row> 
+        </b-row> 
 
-    </b-container>
+      </template>
+
+    </template>
     
-  </div>
+  </b-container>
 </template>
 
 <script>
-import Card from "./Card.vue";
-import ScoreBoard from "./ScoreBoard.vue";
-import GameOverModal from "./GameOverModal.vue";
+import Card from "@/components/Card.vue";
+import ScoreBoard from "@/components/ScoreBoard.vue";
+import GameOverModal from "@/components/GameOverModal.vue";
+import StartGame from "@/components/StartGame.vue";
 import {mapGetters,mapActions} from "vuex";
 import {NUMBER} from "@/common/types.js";
 const DIMENSION = 4; //needs to be even so that cards have pairs!
@@ -53,7 +64,7 @@ const TIMER = 60;
 export default {
   name: 'NumberCards',
 
-  components: {Card,ScoreBoard,GameOverModal},
+  components: {Card,ScoreBoard,GameOverModal,StartGame},
 
   data(){
     return {
@@ -65,15 +76,10 @@ export default {
         message: "",
         isWinner: false
       },
-      timerID: null
+      timerID: null,
+      hasGameStarted: false
     }
   },//end data
-
-  created(){
-    this.generateNumberCards({dimension:DIMENSION});
-    this.shuffleCards({cardType:NUMBER,dimension: DIMENSION});
-    this.countDownTimer();
-  },
 
   computed: {
     ...mapGetters({numberCards:'cards/numberCards'}),
@@ -205,6 +211,14 @@ export default {
 
       this.shuffleCards({cardType:NUMBER,dimension: DIMENSION});
     },//end restartGame
+
+
+    startGame(){
+      this.hasGameStarted = true;
+      this.generateNumberCards({dimension:DIMENSION});
+      this.shuffleCards({cardType:NUMBER,dimension: DIMENSION});
+      this.countDownTimer();
+    }
 
   },//end methods
 
