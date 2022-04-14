@@ -71,6 +71,7 @@ export default {
 
   created(){
     this.generateNumberCards({dimension:DIMENSION});
+    this.shuffleCards({cardType:NUMBER,dimension: DIMENSION});
     this.countDownTimer();
   },
 
