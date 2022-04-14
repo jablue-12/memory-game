@@ -27,7 +27,7 @@
                     
                     <b-row class="mb-2">
                         <b-col>
-                            <!-- <router-link :to="home" class="btn btn-secondary" @click="login()" block>Join</router-link> -->
+                            <!-- <router-link :to="currUrl" class="btn btn-secondary" @click="login()" block>Join</router-link> -->
                             <b-button block @click="login()" :disabled="!isUsernameValid()">Join</b-button>
                         </b-col>
                     </b-row>
@@ -50,8 +50,21 @@ export default {
         }
     },
 
+    created(){
+        let cookie = Cookie.get('username');
+        //TODO: do not store username in cookie
+        if(cookie){
+            console.log('cookie should be defined: ' + JSON.stringify(cookie));
+            // Cookie.set('username',this.cookie,{expires:2});
+            this.$router.push(this.currUrl);
+        }else{
+            console.log('cookie undefined....');
+        }
+     
+    },
+
     props: {
-        home: {
+        currUrl: {
             type: String,
             default: "/"
         }
@@ -61,7 +74,7 @@ export default {
         login(){
             //cookie expires on 2 days
             Cookie.set('username',this.username,{expires:2});
-            this.$router.push(this.home);
+            this.$router.push(this.currUrl);
         },
         
         isUsernameValid(){

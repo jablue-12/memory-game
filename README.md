@@ -38,7 +38,7 @@ vue add router
 ```
 --------
 ## Libraries used
-### JS-Cookie
+### JS-Cookie [source](https://github.com/js-cookie/js-cookie)
 ```
 npm install --save js-cookie
 ```
