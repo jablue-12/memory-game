@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const state = {
     current: null, //current user
     all: [], //all users
@@ -30,7 +32,7 @@ const actions = {
         commit('current',{current: current});
     },
 
-    all({commit}){
+    async all({commit}){
         const all = [
             {username: "Jablue", scores: [{difficulty: "easy", value: 7},{difficulty: "hard", value: 3}]},
             {username: "Gabokski", scores: [{difficulty: "easy", value: 7},{difficulty: "hard", value: 3}]},
@@ -40,6 +42,12 @@ const actions = {
             {username: "Bart", scores: [{difficulty: "easy", value: 7},{difficulty: "hard", value: 3}]},
             {username: "Ardeen", scores: [{difficulty: "easy", value: 7},{difficulty: "hard", value: 3}]}
         ];
+
+        const request = await axios.get('http://127.0.0.1:5000/');
+        console.log('GET REQUEST: ' + JSON.stringify(request.data));
+
+        const postReq = await axios.post('http://127.0.0.1:5000/',{'name':'JAREed test'});
+        console.log('POST REQUEST: ' + JSON.stringify(postReq.data));
         commit('all',{all: all});
     },
 
