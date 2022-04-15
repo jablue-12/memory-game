@@ -13,6 +13,13 @@ export default {
   name: 'Home',
   components: {
     NumberCards
-  }
+  },
+
+  beforeRouteLeave (to,from,next) {
+    if(confirm('Leaving this game will not save your score. Do you want leave this page?')){
+      next();
+    }
+  },
+
 }
 </script>
