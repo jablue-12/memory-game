@@ -14,9 +14,6 @@
     <b-container>
       <b-row>
         <b-col>
-
-          <b-row align-h="center"><h3>Memory Game!</h3></b-row>
-
           <b-row 
             align-h="center"
             v-for="(rowList,index) in numberCards" :key="index">
